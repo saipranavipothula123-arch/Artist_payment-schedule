@@ -2,401 +2,299 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FY25 Chelsea Flood Wall — Job Sheet (Single A4 Page)</title>
+<title>FY25 Chelsea Flood Wall — Job Sheet (Single Table, A4)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root{
-    --ink:#111; --muted:#444; --line:#1a1a1a; --gray:#666; --bg:#fff; --bar:#e9ecef; --pad:12px;
-    /* ↓ Adjust these two if you still see a 2nd page */
-    --print-zoom: 0.62;     /* global scale on print (smaller = more fits) */
-    --print-margin: 0.30in; /* A4 page margins (smaller = more fits) */
+    --ink:#111; --muted:#444; --gray:#666; --bg:#fff; --bar:#e9ecef;
+    --print-zoom: 0.60;        /* smaller = more fits on one page */
+    --print-margin: 0.30in;     /* A4 print margins */
   }
-
   *{box-sizing:border-box}
-  html,body{margin:0;background:#f5f5f5;color:var(--ink);font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", sans-serif;}
-  .sheet{
-    width: 860px; margin:24px auto; background:var(--bg);
-    box-shadow: 0 4px 28px rgba(0,0,0,.08);
-    border: 2px solid #000; padding: 18px;
+  html,body{margin:0; background:#f3f3f3; color:var(--ink);
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", sans-serif;
+    line-height:1.15;
   }
-  .title-row{display:flex; justify-content:space-between; align-items:flex-end; gap:8px; margin-bottom:6px;}
-  .title h1{font-size:20px; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:.3px}
-  .title small{color:var(--gray)}
-  .hdr-grid{display:grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap:10px; margin:8px 0 14px;}
-  .linefield{border-bottom:1.5px solid #000; min-height:22px; padding:2px 6px; font-size:14px;}
-  .linefield input{width:100%; border:0; outline:0; font:inherit; background:transparent;}
-  .bar{background:var(--bar); border:1.5px solid #000; padding:6px 10px; font-weight:700; text-transform:uppercase; margin-top:10px;}
-  .block{border:1.5px solid #000; border-top:0; display:grid; grid-template-columns: 1.5fr 1.2fr; gap:0;}
-  .col{padding: var(--pad); border-right:1.5px solid #000;}
-  .col:last-child{border-right:0}
-  .inv-head{font-weight:700; margin-bottom:8px}
-  .invline{display:grid; grid-template-columns: 22px 1fr auto; align-items:center; gap:8px; padding:2px 0;}
-  .invline input[type="text"]{border:0; border-bottom:1px solid #000; width:120px; background:transparent; font:inherit;}
-  .amt{min-width:110px; text-align:right; font-variant-numeric: tabular-nums;}
-  .check{display:flex; gap:8px; align-items:flex-start; margin:6px 0;}
-  .check input{transform: translateY(2px)}
-  .muted{color:var(--muted); font-size:12px}
-  .tight{line-height:1.15}
-  .small{font-size:12px}
-  .sumrow{display:flex; justify-content:flex-end; gap:12px; margin-top:6px; font-weight:700}
-  .sumrow .v{min-width:140px; text-align:right; font-variant-numeric: tabular-nums;}
-  .block, .bar { break-inside: avoid; page-break-inside: avoid; }
-  .sheet{page-break-inside: avoid; page-break-after: avoid; page-break-before: avoid;}
 
-  /* PRINT: shrink fonts & spacing AND scale the whole sheet to force single A4 page */
+  .sheet{
+    width: 860px; margin:18px auto; background:var(--bg);
+    border:2px solid #000; box-shadow:0 4px 22px rgba(0,0,0,.08);
+    padding:14px;
+  }
+
+  .title-row{display:flex; justify-content:space-between; align-items:flex-end; gap:8px; margin-bottom:6px;}
+  .title h1{font-size:18px; margin:0 0 2px 0; text-transform:uppercase; letter-spacing:.2px}
+  .title small{color:var(--gray); font-size:12px}
+
+  .hdr-grid{
+    display:grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap:8px; margin:6px 0 10px;
+  }
+  .linefield{border-bottom:1.5px solid #000; min-height:20px; padding:1px 4px; font-size:12px}
+  .linefield input{width:100%; border:0; outline:0; font:inherit; background:transparent}
+
+  .mini-grid{display:grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap:8px; margin:2px 0 8px}
+
+  /* Single compact table */
+  table.schedule{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
+    font-size:12px;
+  }
+  .schedule th, .schedule td{
+    border:1.2px solid #000;
+    padding:2px 4px;           /* tight row height */
+    vertical-align:middle;
+    line-height:1.1;
+  }
+  .schedule th{
+    background:var(--bar);
+    text-transform:uppercase;
+    font-weight:700;
+    font-size:11px;
+  }
+  .code{width:38px; text-align:center}
+  .bench{width:168px}
+  .bucket{width:110px}
+  .pct{width:92px; text-align:center; font-variant-numeric:tabular-nums}
+  .amt{width:120px; text-align:right; font-variant-numeric:tabular-nums}
+  .inv{width:118px}
+  .inv input{width:100%; border:0; border-bottom:1px solid #000; background:transparent; font:inherit; padding:0 0 1px}
+  .trig{width:auto; font-size:10px; color:var(--muted); line-height:1.05}
+
+  .totals td{font-weight:700; background:#fafafa}
+  .note{font-size:10px; color:var(--muted); margin-top:4px}
+
   @media print{
     @page{ size: A4; margin: var(--print-margin) }
-
-    html, body{ background:#fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    /* Base font shrink just for print (in addition to zoom scaling) */
-    body{ font-size: 10.5px !important; line-height: 1.18; }
-
+    html,body{ background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    body{ font-size:10px; line-height:1.12 }
     .sheet{
-      box-shadow:none; margin:0; border:2px solid #000; padding:10px;
-      /* Printable width = 8.27in - (left+right margins). Divide by zoom to fill after scale */
-      width: calc( (8.27in - (var(--print-margin) * 2)) / var(--print-zoom) );
+      margin:0; box-shadow:none; padding:10px; border:2px solid #000;
+      /* Make it wide first, then scale so it fits exactly one page */
+      width: calc( (8.27in - (var(--print-margin)*2)) / var(--print-zoom) );
       transform: scale(var(--print-zoom));
       transform-origin: top left;
       page-break-inside: avoid;
     }
-
-    /* Tighten type and boxes further on print */
-    .title h1{font-size: 11px}
-    .small, .muted{font-size: 9px}
-    .hdr-grid{gap:5px; margin:4px 0 8px}
-    .linefield{min-height:14px; font-size: 9.5px; padding:1px 3px}
-    .bar{padding:3px 7px; margin-top:8px}
-    .col{padding:6px}
-    .invline{gap:5px; padding:1px 0}
-    .amt{min-width:82px}
+    .title h1{font-size:12px}
+    .title small{font-size:10px}
+    .hdr-grid, .mini-grid{gap:5px; margin:4px 0 8px}
+    .linefield{min-height:14px; font-size:10px; padding:1px 3px}
+    .schedule{font-size:10px}
+    .schedule th{font-size:9.5px; padding:2px 3px}
+    .schedule td{padding:1.5px 3px}
+    .trig{font-size:9px}
   }
 </style>
 </head>
 <body>
 <div class="sheet">
 
-  <!-- Header -->
   <div class="title-row">
     <div class="title">
       <h1>FY25 Chelsea Flood Wall</h1>
       <small>Job Sheet • Auto-calculates from Total Project Budget</small>
     </div>
-    <div class="small muted">Print: File → Print (A4, single page)</div>
+    <div class="title"><small>Print: A4 • single page</small></div>
   </div>
 
   <div class="hdr-grid">
     <div>
-      <div class="small">Artist:</div>
+      <div class="title small">Artist</div>
       <div class="linefield"><input id="artist" placeholder=""></div>
     </div>
     <div>
-      <div class="small">Program Manager:</div>
+      <div class="title small">Program Manager</div>
       <div class="linefield"><input id="pm" placeholder=""></div>
     </div>
     <div>
-      <div class="small">Fiscal Year:</div>
+      <div class="title small">Fiscal Year</div>
       <div class="linefield"><input id="fy" value="FY25"></div>
     </div>
     <div>
-      <div class="small">Project Title:</div>
+      <div class="title small">Project Title</div>
       <div class="linefield"><input id="proj" value="Chelsea Flood Wall"></div>
     </div>
   </div>
 
-  <div class="hdr-grid">
+  <div class="mini-grid">
     <div>
-      <div class="small">Total Project Budget ($):</div>
+      <div class="title small">Total Project Budget ($)</div>
       <div class="linefield"><input id="budget" type="number" step="100" min="0" placeholder="e.g., 192000"></div>
-      <div class="small muted" id="budgetEcho"></div>
+      <div class="note" id="budgetEcho"></div>
     </div>
     <div>
-      <div class="small">Design Budget (25%)</div>
+      <div class="title small">Design Budget (25%)</div>
       <div class="linefield"><span id="designBudget"></span></div>
     </div>
     <div>
-      <div class="small">Fabrication Budget (75%)</div>
+      <div class="title small">Fabrication Budget (75%)</div>
       <div class="linefield"><span id="fabBudget"></span></div>
     </div>
     <div>
-      <div class="small">HP1 Honorarium (not in contract)</div>
+      <div class="title small">HP1 Honorarium (not in contract)</div>
       <div class="linefield"><input id="hp1" type="number" step="50" min="0" value="0"></div>
     </div>
   </div>
 
-  <!-- HP1 -->
-  <div class="bar">HP1 – Design Proposal</div>
-  <div class="block">
-    <div class="col">
-      <div class="inv-head">INVOICE #</div>
+  <!-- Single compact schedule table -->
+  <table class="schedule">
+    <thead>
+      <tr>
+        <th class="code">Code</th>
+        <th class="bench">Benchmark</th>
+        <th class="bucket">Bucket</th>
+        <th class="pct">%Bucket / %Total</th>
+        <th class="amt">Amount</th>
+        <th class="inv">Invoice #</th>
+        <th class="trig">Trigger</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="code">HP1</td>
+        <td class="bench">Design Proposal</td>
+        <td class="bucket">Honorarium</td>
+        <td class="pct">—</td>
+        <td class="amt" id="amt_hp1">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">After selection committee approval</td>
+      </tr>
 
-      <div class="invline">
-        <input type="checkbox">
-        <div>HP1&nbsp;INV&nbsp;<input type="text" placeholder=""> </div>
-        <div class="amt" id="a_hp1">—</div>
-      </div>
+      <tr>
+        <td class="code">DP1</td>
+        <td class="bench">Contract Artist</td>
+        <td class="bucket">Design Budget</td>
+        <td class="pct">25% / 6.25%</td>
+        <td class="amt" id="amt_dp1">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">Contract signed; W9 on file; invoice received</td>
+      </tr>
+      <tr>
+        <td class="code">DP2</td>
+        <td class="bench">Schematic Design</td>
+        <td class="bucket">Design Budget</td>
+        <td class="pct">40% / 10%</td>
+        <td class="amt" id="amt_dp2">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">Schematic design approved by PAOC</td>
+      </tr>
+      <tr>
+        <td class="code">DP3</td>
+        <td class="bench">Final Design</td>
+        <td class="bucket">Design Budget</td>
+        <td class="pct">30% / 7.5%</td>
+        <td class="amt" id="amt_dp3">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">Final design approved by PAOC</td>
+      </tr>
+      <tr>
+        <td class="code">DP4</td>
+        <td class="bench">Final Acceptance</td>
+        <td class="bucket">Design Budget</td>
+        <td class="pct">5% / 1.25%</td>
+        <td class="amt" id="amt_dp4">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">Project closeout and acceptance</td>
+      </tr>
 
-      <div class="invline">
-        <input type="checkbox">
-        <div>DP1&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt" id="a_dp1">—</div>
-      </div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>DP2&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt" id="a_dp2">—</div>
-      </div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>DP3&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt" id="a_dp3">—</div>
-      </div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>DP4&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt" id="a_dp4">—</div>
-      </div>
+      <tr>
+        <td class="code">CP1</td>
+        <td class="bench">Start Fabrication</td>
+        <td class="bucket">Fabrication Budget</td>
+        <td class="pct">45% / 33.75%</td>
+        <td class="amt" id="amt_cp1">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">Final design approval; authorization to begin</td>
+      </tr>
+      <tr>
+        <td class="code">CP2</td>
+        <td class="bench">50% Fabrication Complete</td>
+        <td class="bucket">Fabrication Budget</td>
+        <td class="pct">25% / 18.75%</td>
+        <td class="amt" id="amt_cp2">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">Approved at 50% fabrication progress</td>
+      </tr>
+      <tr>
+        <td class="code">CP3</td>
+        <td class="bench">100% Fabrication Complete</td>
+        <td class="bucket">Fabrication Budget</td>
+        <td class="pct">25% / 18.75%</td>
+        <td class="amt" id="amt_cp3">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">Approved at 100% fabrication completion</td>
+      </tr>
+      <tr>
+        <td class="code">CP4</td>
+        <td class="bench">Final Acceptance</td>
+        <td class="bucket">Fabrication Budget</td>
+        <td class="pct">5% / 3.75%</td>
+        <td class="amt" id="amt_cp4">—</td>
+        <td class="inv"><input type="text" placeholder=""></td>
+        <td class="trig">Artwork installed; exit survey; inventory</td>
+      </tr>
 
-      <div class="small muted tight">
-        <strong>Note:</strong> DP payments are percentages of the Design Budget. HP1 is optional honorarium.
-      </div>
-    </div>
-    <div class="col">
-      <div class="check"><input type="checkbox"><label>Hours supporting applicants</label></div>
-      <div class="check"><input type="checkbox"><label>In-progress website page created</label></div>
-      <div class="check"><input type="checkbox"><label>Community engagement</label></div>
-      <div class="check"><input type="checkbox"><label>Hours supporting finalists</label></div>
-      <div class="check"><input type="checkbox"><label>Finalists’ honorarium invoices received</label></div>
-      <div class="small muted">Trigger: After selection committee approval</div>
-    </div>
-  </div>
+      <!-- Totals -->
+      <tr class="totals">
+        <td class="code" colspan="3">Total of Contract Payments (DP+CP)</td>
+        <td class="pct">—</td>
+        <td class="amt" id="contractTotal">—</td>
+        <td class="inv"></td>
+        <td class="trig"></td>
+      </tr>
+      <tr class="totals">
+        <td class="code" colspan="3">Honorarium (HP1)</td>
+        <td class="pct">—</td>
+        <td class="amt" id="honorTotal">—</td>
+        <td class="inv"></td>
+        <td class="trig"></td>
+      </tr>
+      <tr class="totals">
+        <td class="code" colspan="3"><em>Grand Total</em></td>
+        <td class="pct">—</td>
+        <td class="amt" id="grandTotal">—</td>
+        <td class="inv"></td>
+        <td class="trig"></td>
+      </tr>
+    </tbody>
+  </table>
 
-  <!-- DP1 -->
-  <div class="bar">DP1 – Contract Artist</div>
-  <div class="block">
-    <div class="col">
-      <div class="inv-head">INVOICE #</div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>PM&nbsp;DP1&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt"><span class="muted">manual</span></div>
-      </div>
-      <div class="sumrow small">
-        <div class="k">DP1 Amount</div>
-        <div class="v" id="sum_dp1">—</div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="check"><input type="checkbox"><label>W9 on file</label></div>
-      <div class="check"><input type="checkbox"><label>DP1 Artist invoice received</label></div>
-      <div class="check"><input type="checkbox"><label>Website updated</label></div>
-      <div class="small muted">Trigger: Contract signed, W9 on file, invoice received</div>
-    </div>
-  </div>
-
-  <!-- DP2 -->
-  <div class="bar">DP2 – Schematic Design</div>
-  <div class="block">
-    <div class="col">
-      <div class="inv-head">INVOICE #</div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>PM&nbsp;DP2&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt"><span class="muted">manual</span></div>
-      </div>
-      <div class="sumrow small">
-        <div class="k">DP2 Amount</div>
-        <div class="v" id="sum_dp2">—</div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="check"><input type="checkbox"><label>Insurance on file</label></div>
-      <div class="check"><input type="checkbox"><label>DP2 Artist invoice received</label></div>
-      <div class="check"><input type="checkbox"><label>Website updated</label></div>
-      <div class="small muted">Trigger: Schematic design approved by PAOC</div>
-    </div>
-  </div>
-
-  <!-- DP3 + CP1 -->
-  <div class="bar">DP3 – Final Design and CP1 – Start Fabrication</div>
-  <div class="block">
-    <div class="col">
-      <div class="inv-head">INVOICE #</div>
-
-      <div class="invline">
-        <input type="checkbox">
-        <div>PM&nbsp;DP3&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt"><span class="muted">manual</span></div>
-      </div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>PM&nbsp;CP1&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt"><span class="muted">manual</span></div>
-      </div>
-
-      <div class="invline">
-        <input type="checkbox">
-        <div>CP1&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt" id="a_cp1">—</div>
-      </div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>CP2&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt" id="a_cp2">—</div>
-      </div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>CP3&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt" id="a_cp3">—</div>
-      </div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>CP4&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt" id="a_cp4">—</div>
-      </div>
-
-      <div class="sumrow small">
-        <div class="k">CP Contract Subtotal</div>
-        <div class="v" id="sum_cp">—</div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="check"><input type="checkbox"><label>DP3/CP1 Artist invoice received</label></div>
-      <div class="check"><input type="checkbox"><label>Website updated</label></div>
-      <div class="small muted">Trigger: Final design approval; authorization to begin fabrication</div>
-    </div>
-  </div>
-
-  <!-- CP2 -->
-  <div class="bar">CP2 – 50%</div>
-  <div class="block">
-    <div class="col">
-      <div class="inv-head">INVOICE #</div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>PM&nbsp;CP2&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt"><span class="muted">manual</span></div>
-      </div>
-      <div class="sumrow small">
-        <div class="k">CP2 Amount</div>
-        <div class="v" id="sum_cp2">—</div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="check"><input type="checkbox"><label>CP2 Artist invoice received</label></div>
-      <div class="check"><input type="checkbox"><label>Website updated</label></div>
-      <div class="small muted">Trigger: Approved at 50% fabrication progress</div>
-    </div>
-  </div>
-
-  <!-- CP3 -->
-  <div class="bar">CP3 – 100%</div>
-  <div class="block">
-    <div class="col">
-      <div class="inv-head">INVOICE #</div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>PM&nbsp;CP3&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt"><span class="muted">manual</span></div>
-      </div>
-      <div class="sumrow small">
-        <div class="k">CP3 Amount</div>
-        <div class="v" id="sum_cp3">—</div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="check"><input type="checkbox"><label>CP3 Artist invoice received</label></div>
-      <div class="check"><input type="checkbox"><label>Website updated</label></div>
-      <div class="small muted">Trigger: Approved at 100% fabrication completion</div>
-    </div>
-  </div>
-
-  <!-- Final Acceptance -->
-  <div class="bar">CP4/DP4 – Final Acceptance</div>
-  <div class="block">
-    <div class="col">
-      <div class="inv-head">INVOICE #</div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>PM&nbsp;DP4&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt"><span class="muted">manual</span></div>
-      </div>
-      <div class="invline">
-        <input type="checkbox">
-        <div>PM&nbsp;CP4&nbsp;INV&nbsp;<input type="text" placeholder=""></div>
-        <div class="amt"><span class="muted">manual</span></div>
-      </div>
-      <div class="sumrow small">
-        <div class="k">DP4 Amount</div>
-        <div class="v" id="sum_dp4">—</div>
-      </div>
-      <div class="sumrow small">
-        <div class="k">CP4 Amount</div>
-        <div class="v" id="sum_cp4">—</div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="check"><input type="checkbox"><label>CP4/DP4 Artist invoice received</label></div>
-      <div class="check"><input type="checkbox"><label>Exit survey received</label></div>
-      <div class="check"><input type="checkbox"><label>Website updated to completed projects</label></div>
-      <div class="check"><input type="checkbox"><label>Added to master public art inventory</label></div>
-      <div class="small muted">Trigger: Project closeout & acceptance / Artwork installed</div>
-    </div>
-  </div>
-
-  <!-- Totals -->
-  <div style="padding:8px 2px 0">
-    <div class="sumrow">
-      <div>Total of Contract Payments</div>
-      <div class="v" id="contractTotal">—</div>
-    </div>
-    <div class="sumrow">
-      <div>Honorarium (HP1)</div>
-      <div class="v" id="honorTotal">—</div>
-    </div>
-    <div class="sumrow">
-      <div><em>Grand Total</em></div>
-      <div class="v" id="grandTotal">—</div>
-    </div>
-    <div class="small muted" id="matchNote"></div>
-  </div>
-
+  <div class="note" id="matchNote"></div>
 </div>
 
 <script>
   const fmt = new Intl.NumberFormat(undefined,{style:'currency',currency:'USD'});
-  const $ = id => document.getElementById(id);
+  const $ = (id)=>document.getElementById(id);
 
   function recalc(){
     const T = Number($('budget').value)||0;
     const D = T*0.25, F = T*0.75;
+    const h = Number($('hp1').value)||0;
 
     $('budgetEcho').textContent = T? `Entered: ${fmt.format(T)}` : '';
     $('designBudget').textContent = D? fmt.format(D):'';
     $('fabBudget').textContent    = F? fmt.format(F):'';
 
-    // DP (Design)
+    // Design (25% of Total)
     const dp1 = D*0.25, dp2 = D*0.40, dp3 = D*0.30, dp4 = D*0.05;
-    set('a_dp1', D? fmt.format(dp1):'—');
-    set('a_dp2', D? fmt.format(dp2):'—');
-    set('a_dp3', D? fmt.format(dp3):'—');
-    set('a_dp4', D? fmt.format(dp4):'—');
-    set('sum_dp1', D? fmt.format(dp1):'—');
-    set('sum_dp2', D? fmt.format(dp2):'—');
-    set('sum_dp4', D? fmt.format(dp4):'—');
+    set('amt_dp1', D? fmt.format(dp1):'—');
+    set('amt_dp2', D? fmt.format(dp2):'—');
+    set('amt_dp3', D? fmt.format(dp3):'—');
+    set('amt_dp4', D? fmt.format(dp4):'—');
 
-    // CP (Fabrication)
+    // Fabrication (75% of Total)
     const cp1 = F*0.45, cp2 = F*0.25, cp3 = F*0.25, cp4 = F*0.05;
-    set('a_cp1', F? fmt.format(cp1):'—');
-    set('a_cp2', F? fmt.format(cp2):'—');
-    set('a_cp3', F? fmt.format(cp3):'—');
-    set('a_cp4', F? fmt.format(cp4):'—');
-    set('sum_cp',  F? fmt.format(cp1+cp2+cp3+cp4):'—');
-    set('sum_cp2', F? fmt.format(cp2):'—');
-    set('sum_cp3', F? fmt.format(cp3):'—');
-    set('sum_cp4', F? fmt.format(cp4):'—');
+    set('amt_cp1', F? fmt.format(cp1):'—');
+    set('amt_cp2', F? fmt.format(cp2):'—');
+    set('amt_cp3', F? fmt.format(cp3):'—');
+    set('amt_cp4', F? fmt.format(cp4):'—');
+
+    // HP1 amount
+    set('amt_hp1', h ? fmt.format(h) : '—');
 
     const contract = dp1+dp2+dp3+dp4+cp1+cp2+cp3+cp4;
-    const h = Number($('hp1').value)||0;
     set('contractTotal', T? fmt.format(contract):'—');
     set('honorTotal', fmt.format(h));
     set('grandTotal', fmt.format(contract+h));
