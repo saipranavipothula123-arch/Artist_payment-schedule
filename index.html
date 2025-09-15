@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>FY25 Chelsea Flood Wall — Job Sheet (Single-Page Print)</title>
+<title>FY25 Chelsea Flood Wall — Job Sheet (Single A4 Page)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root{
     --ink:#111; --muted:#444; --line:#1a1a1a; --gray:#666; --bg:#fff; --bar:#e9ecef; --pad:12px;
-    /* Tweak this if needed: smaller number = smaller print. */
-    --print-zoom: 0.68;   /* scales everything during print */
+    /* ↓ Adjust these two if you still see a 2nd page */
+    --print-zoom: 0.62;     /* global scale on print (smaller = more fits) */
+    --print-margin: 0.30in; /* A4 page margins (smaller = more fits) */
   }
 
   *{box-sizing:border-box}
@@ -40,36 +41,34 @@
   .sumrow{display:flex; justify-content:flex-end; gap:12px; margin-top:6px; font-weight:700}
   .sumrow .v{min-width:140px; text-align:right; font-variant-numeric: tabular-nums;}
   .block, .bar { break-inside: avoid; page-break-inside: avoid; }
+  .sheet{page-break-inside: avoid; page-break-after: avoid; page-break-before: avoid;}
 
-  /* PRINT: shrink fonts + spacing AND scale the whole sheet to fit one page */
+  /* PRINT: shrink fonts & spacing AND scale the whole sheet to force single A4 page */
   @media print{
-    /* Choose your paper here: A4 or Letter (uncomment the one you want) */
-    @page{ size: A4; margin: 0.35in }       /* A4 */
-    /* @page{ size: Letter; margin: 0.35in } */  /* Letter */
+    @page{ size: A4; margin: var(--print-margin) }
 
     html, body{ background:#fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     /* Base font shrink just for print (in addition to zoom scaling) */
-    body{ font-size: 11px !important; line-height: 1.2; }
+    body{ font-size: 10.5px !important; line-height: 1.18; }
 
     .sheet{
-      box-shadow:none; margin:0; border:2px solid #000; padding:12px;
-      /* Make the element wider pre-scale so after scale it fills printable width */
-      /* For A4 width 8.27in: printable width = 8.27 - (0.35*2) = 7.57in */
-      width: calc( (8.27in - 0.7in) / var(--print-zoom) );
+      box-shadow:none; margin:0; border:2px solid #000; padding:10px;
+      /* Printable width = 8.27in - (left+right margins). Divide by zoom to fill after scale */
+      width: calc( (8.27in - (var(--print-margin) * 2)) / var(--print-zoom) );
       transform: scale(var(--print-zoom));
       transform-origin: top left;
       page-break-inside: avoid;
     }
 
     /* Tighten type and boxes further on print */
-    .title h1{font-size: 12px}
-    .small, .muted{font-size: 10px}
-    .hdr-grid{gap:6px; margin:6px 0 10px}
-    .linefield{min-height:16px; font-size: 10px; padding:1px 3px}
-    .bar{padding:4px 8px}
-    .col{padding:8px}
-    .invline{gap:6px; padding:1px 0}
-    .amt{min-width:90px}
+    .title h1{font-size: 11px}
+    .small, .muted{font-size: 9px}
+    .hdr-grid{gap:5px; margin:4px 0 8px}
+    .linefield{min-height:14px; font-size: 9.5px; padding:1px 3px}
+    .bar{padding:3px 7px; margin-top:8px}
+    .col{padding:6px}
+    .invline{gap:5px; padding:1px 0}
+    .amt{min-width:82px}
   }
 </style>
 </head>
@@ -345,7 +344,7 @@
   </div>
 
   <!-- Totals -->
-  <div style="padding:10px 2px 2px">
+  <div style="padding:8px 2px 0">
     <div class="sumrow">
       <div>Total of Contract Payments</div>
       <div class="v" id="contractTotal">—</div>
@@ -365,7 +364,7 @@
 
 <script>
   const fmt = new Intl.NumberFormat(undefined,{style:'currency',currency:'USD'});
-  const $ = (id)=>document.getElementById(id);
+  const $ = id => document.getElementById(id);
 
   function recalc(){
     const T = Number($('budget').value)||0;
@@ -375,7 +374,7 @@
     $('designBudget').textContent = D? fmt.format(D):'';
     $('fabBudget').textContent    = F? fmt.format(F):'';
 
-    // DP amounts (of Design)
+    // DP (Design)
     const dp1 = D*0.25, dp2 = D*0.40, dp3 = D*0.30, dp4 = D*0.05;
     set('a_dp1', D? fmt.format(dp1):'—');
     set('a_dp2', D? fmt.format(dp2):'—');
@@ -385,7 +384,7 @@
     set('sum_dp2', D? fmt.format(dp2):'—');
     set('sum_dp4', D? fmt.format(dp4):'—');
 
-    // CP amounts (of Fabrication)
+    // CP (Fabrication)
     const cp1 = F*0.45, cp2 = F*0.25, cp3 = F*0.25, cp4 = F*0.05;
     set('a_cp1', F? fmt.format(cp1):'—');
     set('a_cp2', F? fmt.format(cp2):'—');
@@ -406,7 +405,7 @@
     set('matchNote', T? (diff<=0.01 ? 'OK: Contract total matches total budget.' : 'Warning: Contract total does not match total budget.') : '');
   }
 
-  function set(id,val){ const el = document.getElementById(id); if(el) el.textContent = val; }
+  function set(id,val){ const el = $(id); if(el) el.textContent = val; }
 
   $('budget').addEventListener('input', recalc);
   $('hp1').addEventListener('input', recalc);
