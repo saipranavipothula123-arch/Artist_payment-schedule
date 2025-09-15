@@ -6,57 +6,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root{
-    --ink:#111; --muted:#444; --line:#1a1a1a; --gray:#666; --bg:#fff;
-    --bar:#e9ecef; --pad:12px;
+    --ink:#111; --muted:#444; --line:#1a1a1a; --gray:#666; --bg:#fff; --bar:#e9ecef; --pad:12px;
+    /* ↓ 30% height reduction in print */
+    --print-scale: 0.70; /* 70% */
   }
   *{box-sizing:border-box}
   html,body{margin:0;background:#f5f5f5;color:var(--ink);font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Noto Sans", sans-serif;}
-  .sheet{
-    width: 860px; margin:24px auto; background:var(--bg);
-    box-shadow: 0 4px 28px rgba(0,0,0,.08);
-    border: 2px solid #000; padding: 18px;
-  }
-  .title-row{
-    display:flex; justify-content:space-between; align-items:flex-end; gap:8px; margin-bottom:6px;
-  }
+  .sheet{width: 860px; margin:24px auto; background:var(--bg); box-shadow: 0 4px 28px rgba(0,0,0,.08); border: 2px solid #000; padding: 18px;}
+  .title-row{display:flex; justify-content:space-between; align-items:flex-end; gap:8px; margin-bottom:6px;}
   .title h1{font-size:20px; margin:0 0 4px 0; text-transform:uppercase; letter-spacing:.3px}
   .title small{color:var(--gray)}
-  .hdr-grid{
-    display:grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap:10px; margin:8px 0 14px;
-  }
-  .linefield{
-    border-bottom:1.5px solid #000; min-height:22px; padding:2px 6px; font-size:14px;
-  }
-  .linefield input{
-    width:100%; border:0; outline:0; font:inherit; background:transparent;
-  }
+  .hdr-grid{display:grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap:10px; margin:8px 0 14px;}
+  .linefield{border-bottom:1.5px solid #000; min-height:22px; padding:2px 6px; font-size:14px;}
+  .linefield input{width:100%; border:0; outline:0; font:inherit; background:transparent;}
   .bar{background:var(--bar); border:1.5px solid #000; padding:6px 10px; font-weight:700; text-transform:uppercase; margin-top:10px;}
-  .block{
-    border:1.5px solid #000; border-top:0;
-    display:grid; grid-template-columns: 1.5fr 1.2fr; gap:0; 
-  }
+  .block{border:1.5px solid #000; border-top:0; display:grid; grid-template-columns: 1.5fr 1.2fr; gap:0;}
   .col{padding: var(--pad); border-right:1.5px solid #000;}
   .col:last-child{border-right:0}
   .inv-head{font-weight:700; margin-bottom:8px}
   .invline{display:grid; grid-template-columns: 22px 1fr auto; align-items:center; gap:8px; padding:2px 0;}
-  .invline input[type="text"]{
-    border:0; border-bottom:1px solid #000; width:120px; background:transparent; font:inherit;
-  }
+  .invline input[type="text"]{border:0; border-bottom:1px solid #000; width:120px; background:transparent; font:inherit;}
   .amt{min-width:110px; text-align:right; font-variant-numeric: tabular-nums;}
   .check{display:flex; gap:8px; align-items:flex-start; margin:6px 0;}
   .check input{transform: translateY(2px)}
   .muted{color:var(--muted); font-size:12px}
   .tight{line-height:1.15}
-  .two-col{columns:2; column-gap:18px}
   .small{font-size:12px}
-  .right{float:right}
   .sumrow{display:flex; justify-content:flex-end; gap:12px; margin-top:6px; font-weight:700}
   .sumrow .v{min-width:140px; text-align:right; font-variant-numeric: tabular-nums;}
+  .block, .bar { break-inside: avoid; page-break-inside: avoid; }
+
+  /* Print: scale to 70% height + tighten spacing so it fits one Letter page */
   @media print{
-    body{background:#fff}
-    .sheet{box-shadow:none; margin:0; width:auto; border:2px solid #000}
+    @page{ size: Letter; margin: 0.4in } /* adjust to 0.35in if needed */
+    html{ -webkit-print-color-adjust: exact; print-color-adjust: exact; background:#fff; }
+    body{ background:#fff; }
+
+    /* Scale the entire sheet and compensate width so it fills the printable area */
+    .sheet{
+      box-shadow:none; margin:0; border:2px solid #000;
+      /* Printable width = 8.5in - (0.4in*2) = 7.7in; divide by scale to counter the transform */
+      width: calc( (8.5in - 0.8in) / var(--print-scale) );
+      transform: scale(var(--print-scale));
+      transform-origin: top left;
+      /* Tighten padding a bit on print */
+      padding: 12px;
+      page-break-inside: avoid;
+    }
+
+    /* Tighter typography & spacing on print only (keeps on-screen size unchanged) */
+    .title h1{font-size:16px}
+    .small, .muted{font-size:10px}
+    .hdr-grid{gap:6px; margin:6px 0 10px}
+    .linefield{min-height:18px; font-size:12px; padding:2px 4px}
+    .bar{padding:4px 8px}
+    .col{padding:8px}
+    .invline{gap:6px; padding:1px 0}
   }
-  /* Tiny helpers to echo the scanned look */
+
+  /* Tiny helpers */
   .underscore{border-bottom:1px solid #000; display:inline-block; min-width:140px; height:18px; vertical-align:baseline}
   .section-note{border-top:1px dashed #aaa; margin-top:8px; padding-top:6px}
 </style>
@@ -360,11 +368,10 @@
     const D = T*0.25, F = T*0.75;
 
     $('budgetEcho').textContent = T? `Entered: ${fmt.format(T)}` : '';
-
     $('designBudget').textContent = D? fmt.format(D):'';
     $('fabBudget').textContent    = F? fmt.format(F):'';
 
-    // DP amounts (of Design)
+    // DP (Design)
     const dp1 = D*0.25, dp2 = D*0.40, dp3 = D*0.30, dp4 = D*0.05;
     $('a_dp1').textContent = D? fmt.format(dp1):'—';
     $('a_dp2').textContent = D? fmt.format(dp2):'—';
@@ -374,7 +381,7 @@
     $('sum_dp2').textContent = D? fmt.format(dp2):'—';
     $('sum_dp4').textContent = D? fmt.format(dp4):'—';
 
-    // CP amounts (of Fabrication)
+    // CP (Fabrication)
     const cp1 = F*0.45, cp2 = F*0.25, cp3 = F*0.25, cp4 = F*0.05;
     $('a_cp1').textContent = F? fmt.format(cp1):'—';
     $('a_cp2').textContent = F? fmt.format(cp2):'—';
@@ -391,15 +398,12 @@
     $('honorTotal').textContent = fmt.format(h);
     $('grandTotal').textContent = fmt.format(contract+h);
 
-    // Check that contract equals total
     const diff = Math.abs(T - contract);
     $('matchNote').textContent = T? (diff<=0.01 ? 'OK: Contract total matches total budget.' : 'Warning: Contract total does not match total budget.') : '';
   }
 
   $('budget').addEventListener('input', recalc);
   $('hp1').addEventListener('input', recalc);
-  // Initialize for a common example (optional)
-  // $('budget').value = 192000; recalc();
 </script>
 </body>
 </html>
